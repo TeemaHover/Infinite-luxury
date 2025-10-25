@@ -9,9 +9,10 @@ import { AuthModule } from './auth/auth.module';
 import { BaseModule } from './base/base.module';
 import { AllExceptionsFilter } from './utils/all-exceptions.filter';
 import { PostInterceptor } from './post.interceptor';
+import { ProductModule } from './app/product/product.module';
 
 @Module({
-    imports: [ConfigModule.forRoot(), AuthModule, BaseModule],
+    imports: [ConfigModule.forRoot(), AuthModule, BaseModule, ProductModule],
     controllers: [AppController],
     providers: [
         AppService,

@@ -7,6 +7,12 @@ create table IF NOT EXISTS "ADMIN_USERS"(
     "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+create table IF NOT EXISTS "PRODUCTS"(
+    "id" VARCHAR(32) primary KEY,
+    "name" VARCHAR(200) not null,
+    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 create table IF NOT EXISTS "USERS"(
     "id" VARCHAR(32) primary KEY,
     "name" VARCHAR(50) not null,
