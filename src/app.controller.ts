@@ -6,7 +6,7 @@ import { ADMIN } from './base/constants';
 
 @Controller()
 export class AppController {
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService) { }
 
     @Public()
     @Get()
@@ -17,6 +17,12 @@ export class AppController {
     @Public()
     @Post('/dash/admin/login')
     async login(@Request() req) {
+        return await this.authService.adminLogin(req.body);
+    }
+
+    @Public()
+    @Post('/customer/login')
+    async customerLogin(@Request() req) {
         return await this.authService.adminLogin(req.body);
     }
 

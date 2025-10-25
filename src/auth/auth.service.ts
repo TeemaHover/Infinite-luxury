@@ -8,10 +8,20 @@ export class AuthService {
     constructor(
         private adminUsersService: AdminUserService,
         private jwtService: JwtService,
-    ) {}
+    ) { }
 
     async validateAdminUser(username: string, pass: string): Promise<any> {
         const user = await this.adminUsersService.getAdminUser(username);
+        const isMatch = await bcrypt.compare(pass, user.password);
+        if (user && isMatch == true) {
+            const { password, ...result } = user;
+            return result;
+        }
+        return false;
+    }
+
+    async validateUser(username: string, pass: string): Promise<any> {
+        const user = await this.adminUsersService.getUser(username);
         const isMatch = await bcrypt.compare(pass, user.password);
         if (user && isMatch == true) {
             const { password, ...result } = user;

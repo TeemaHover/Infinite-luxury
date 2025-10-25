@@ -10,6 +10,7 @@ const CONSTANT_API_TOKEN = '1234567890';
 @Injectable()
 export class ApiGuard {
     constructor() {}
+    
 
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest<Request>();

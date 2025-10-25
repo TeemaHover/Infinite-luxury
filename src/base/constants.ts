@@ -10,3 +10,14 @@ export const AdminUserStatus = {
     Active: 10,
     Deleted: 20,
 };
+
+export const OrderStatus = {
+    Cancelled: 0,
+    Pending: 10,
+    Approved: 20,
+}
+
+export const ProductStatus = {
+    Available: 0,
+    Unavailable: 10,
+}

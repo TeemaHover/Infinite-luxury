@@ -23,6 +23,10 @@ export class ProductService extends BaseService {
         await this.productDao.update(payload);
     }
 
+    public async updateStatus(id: string, status: number) {
+        await this.productDao.updateStatus(id, status)
+    }
+
     public async list(filter: any) {
         this.adjustFilterForPaging(filter);
         const result = await this.productDao.list(filter);

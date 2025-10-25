@@ -10,7 +10,16 @@ create table IF NOT EXISTS "ADMIN_USERS"(
 create table IF NOT EXISTS "PRODUCTS"(
     "id" VARCHAR(32) primary KEY,
     "name" VARCHAR(200) not null,
+    "status" INTEGER not null,
     "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+create table IF NOT EXISTS "ORDERS"(
+    "id" VARCHAR(32) primary KEY,
+    "productId" VARCHAR(32) not null,
+    "status" INTEGER not null,
+    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "fk_orders_product" FOREIGN KEY ("productId") REFERENCES "PRODUCTS"("id")
 );
 
 create table IF NOT EXISTS "USERS"(
