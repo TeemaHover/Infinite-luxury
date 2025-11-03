@@ -12,16 +12,18 @@ export class UserDao extends BaseDao {
         super();
     }
 
-    add = async (product: any) => {
-        await this._db.insert(tableName, product, ['id', 'name', 'password', 'createdAt']);
+    add = async (user: any) => {
+        const saltOrRounds = 1;
+        user.password = await bcrypt.hash(user.password, saltOrRounds);
+        await this._db.insert(tableName, user, ['id', 'name', 'password', 'status', 'mobile', 'email', 'username', 'createdAt']);
     };
 
-    update = async (product: any) => {
+    update = async (user: any) => {
         await this._db.update(
             tableName,
-            product,
-            ['name'],
-            [new SqlCondition('id', '=', product.id)],
+            user,
+            ['name', 'email', 'mobile', 'username'],
+            [new SqlCondition('id', '=', user.id)],
         );
     };
 
@@ -43,7 +45,7 @@ export class UserDao extends BaseDao {
 
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
         const countResult = await this._db.selectOne(countSql, builder.values);
-        const sql = `SELECT "id", "name" FROM "${tableName}" ${criteria}
+        const sql = `SELECT * FROM "${tableName}" ${criteria}
             ${orderBy} limit ${query.limit} offset ${query.skip}`;
         const result = await this._db.select(sql, builder.values);
 

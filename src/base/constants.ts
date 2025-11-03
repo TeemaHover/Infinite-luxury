@@ -21,3 +21,8 @@ export const ProductStatus = {
     Available: 0,
     Unavailable: 10,
 }
+
+export const UserStatus = {
+    Active: 10,
+    Deleted: 20,
+};

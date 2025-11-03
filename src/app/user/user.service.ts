@@ -3,6 +3,8 @@ import { BaseService } from '../../base/base.service';
 import { AppUtils } from 'src/utils/utils';
 import { UserDao } from './user.dao';
 import * as bcrypt from 'bcrypt';
+import { User } from './user.model';
+import { UserStatus } from 'src/base/constants';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -11,12 +13,17 @@ export class UserService extends BaseService {
     }
 
     public async add(payload: any): Promise<void> {
-        const product = {
+        const user: User = {
             id: AppUtils.uuid4(),
             name: payload.name,
+            status: UserStatus.Active,
+            mobile: payload.mobile,
+            email: payload.email,
+            username: payload.username,
+            password: payload.password,
             createdAt: new Date(),
         };
-        await this.userDao.add(product);
+        await this.userDao.add(user);
     }
 
     public async update(payload: any): Promise<void> {

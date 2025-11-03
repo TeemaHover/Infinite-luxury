@@ -51,7 +51,7 @@ export class AuthService {
         };
     }
     async userLogin(user: any) {
-        const result = await this.validateAdminUser(
+        const result = await this.validateUser(
             user.username,
             user.password,
         );
