@@ -3,6 +3,7 @@ import { BaseService } from '../../base/base.service';
 import { AdminUserStatus } from 'src/base/constants';
 import { AppUtils } from 'src/utils/utils';
 import { ProductDao } from './product.dao';
+import { Product } from './product.model';
 
 @Injectable()
 export class ProductService extends BaseService {
@@ -11,9 +12,20 @@ export class ProductService extends BaseService {
     }
 
     public async add(payload: any): Promise<void> {
-        const product = {
+        const product: Product = {
             id: AppUtils.uuid4(),
             name: payload.name,
+            status: AdminUserStatus.Active,
+            engine: payload.engine,
+            transmission: payload.transmission,
+            driveType: payload.driveType,
+            driverMinAge: payload.driveMinAge,
+            seats: payload.seats,
+            doors: payload.doors,
+            luggageCapacity: payload.luggageCapacity,
+            bluetooth: payload.bluetooth,
+            aux: payload.aux,
+            gps: payload.gps,
             createdAt: new Date(),
         };
         await this.productDao.add(product);

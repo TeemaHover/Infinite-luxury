@@ -3,36 +3,36 @@ import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
 import { ADMIN } from 'src/base/constants';
-import { ProductService } from './product.service';
+import { BrandService } from './brand.service';
 import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 
-@Controller('product')
-export class ProductController extends BaseController {
-    constructor(private readonly productService: ProductService) {
-        super(productService);
+@Controller('brand')
+export class BrandController extends BaseController {
+    constructor(private readonly brandService: BrandService) {
+        super(brandService);
     }
 
     @Roles(ADMIN)
     @Post('/add')
     async add(@Request() req: DashRequest) {
-        await this.productService.add(req.body);
+        await this.brandService.add(req.body);
     }
 
     @Roles(ADMIN)
     @Post('/update')
     async update(@Request() req: DashRequest) {
-        await this.productService.update(req.body);
+        await this.brandService.update(req.body);
     }
 
     @Public()
     @Get('/list')
     async list(@Request() req: DashRequest) {
-        return await this.productService.list(req.query);
+        return await this.brandService.list(req.query);
     }
 
     @Public()
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
-        return await this.productService.getById(req.params.id);
+        return await this.brandService.getById(req.params.id);
     }
 }

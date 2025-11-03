@@ -2,26 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { BaseDao } from 'src/base/base.dao';
 import { AppDB } from 'src/db/pg/app.db';
 import { SqlBuilder, SqlCondition } from 'src/db/pg/sql.builder';
+import * as bcrypt from 'bcrypt';
 
-const tableName = 'ORDERS';
+const tableName = 'USERS';
 
 @Injectable()
-export class OrderDao extends BaseDao {
+export class UserDao extends BaseDao {
     constructor(private readonly _db: AppDB) {
         super();
     }
 
-    add = async (data: any) => {
-        await this._db.insert(tableName, data, ['id', 'productId', 'status', 'createdAt']);
+    add = async (product: any) => {
+        await this._db.insert(tableName, product, ['id', 'name', 'password', 'createdAt']);
     };
 
-    changeProduct = async (id: string, productId: string) => {
-        return await this._db._update(`UPDATE "${tableName}" SET "productId" = $1 WHERE "id" = $2`, [productId, id])
-    }
-
-    updateStatus = async (id: string, status: number) => {
-        return this._db._update(`UPDATE "${tableName}" SET "status" = $1 WHERE "id" = $2`, [status, id])
-    }
+    update = async (product: any) => {
+        await this._db.update(
+            tableName,
+            product,
+            ['name'],
+            [new SqlCondition('id', '=', product.id)],
+        );
+    };
 
     getById = async (id: any) => {
         return await this._db.selectOne(
@@ -36,7 +38,7 @@ export class OrderDao extends BaseDao {
         const orderBy = this.orderBy(query.column, query.orderDirection, [
             'createdAt',
             'id',
-            'productId',
+            'name',
         ]);
 
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
@@ -47,6 +49,34 @@ export class OrderDao extends BaseDao {
 
         return { count: countResult.count, items: result };
     };
+
+    changePassword = async (id: string, password: string) => {
+        const saltOrRounds = 1;
+        password = await bcrypt.hash(password, saltOrRounds);
+
+        const builder = new SqlBuilder({ password }, ['password']);
+
+        const { cols, indexes } = builder.create();
+        const criteria = builder.condition('id', '=', id).criteria();
+        await this._db._update(
+            `UPDATE "${tableName}" SET (${cols}) = ROW(${indexes}) ${criteria}`,
+            builder.values,
+        );
+    };
+
+
+    get = async (username: any) => {
+        return await this._db.selectOne(
+            `SELECT * FROM "${tableName}" WHERE lower("username")= lower($1)`,
+            [username],
+        );
+    };
+
+    countUsername = async (username: any) => {
+        return await this._db.count(`SELECT COUNT(*) FROM "${tableName}" WHERE "username" = $1`, [
+            username
+        ])
+    }
 
     buildCriteria(filter: any) {
         if (filter.name) {

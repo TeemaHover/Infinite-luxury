@@ -12,14 +12,42 @@ export class ProductDao extends BaseDao {
     }
 
     add = async (product: any) => {
-        await this._db.insert(tableName, product, ['id', 'name', 'createdAt']);
+        await this._db.insert(tableName, product,
+            [
+                'id',
+                'name',
+                'status',
+                'engine',
+                'transmission',
+                'driveType',
+                'driveMinAge',
+                'seats',
+                'doors',
+                'luggageCapacity',
+                'bluetooth',
+                'aux',
+                'gps',
+                'createdAt'
+            ]);
     };
 
     update = async (product: any) => {
         await this._db.update(
             tableName,
             product,
-            ['name'],
+            [
+                'name',
+                'engine',
+                'transmission',
+                'driveType',
+                'driveMinAge',
+                'seats',
+                'doors',
+                'luggageCapacity',
+                'bluetooth',
+                'aux',
+                'gps',
+            ],
             [new SqlCondition('id', '=', product.id)],
         );
     };
@@ -71,8 +99,6 @@ export class ProductDao extends BaseDao {
 
         const criteria = builder
             .conditionIfNotEmpty('name', 'ILIKE', filter.name)
-            .conditionIfNotEmpty('username', 'ILIKE', filter.username)
-            .conditionIfNotEmpty('role', '=', filter.position)
             .criteria();
         return { builder, criteria };
     }
@@ -81,25 +107,12 @@ export class ProductDao extends BaseDao {
         const builder = new SqlBuilder(filter);
         let selectFields = `"id", "name" as "value"`;
 
-        if (filter.searchByUsername && filter.name) {
-            const namePattern = `%${filter.name}%`;
-            builder.orConditions([
-                new SqlCondition('username', 'ILIKE', namePattern),
-                new SqlCondition('name', 'ILIKE', namePattern),
-            ]);
-            selectFields = `"username" as "id", "name" as "value"`;
-        } else if (filter.name) {
-            const namePattern = `%${filter.name}%`;
-            builder.orConditions([
-                new SqlCondition('id', 'ILIKE', namePattern),
-                new SqlCondition('name', 'ILIKE', namePattern),
-            ]);
-        }
-
-        const criteria = builder.criteria();
+        const criteria = builder
+            .conditionIfNotEmpty('name', '=', filter.name)
+            .criteria();
 
         return await this._db.select(
-            `SELECT ${selectFields} FROM "ADMIN_USERS" ${criteria} limit ${filter.limit} offset ${filter.skip}`,
+            `SELECT ${selectFields} FROM "${tableName}" ${criteria} limit ${filter.limit} offset ${filter.skip}`,
             builder.values,
         );
     }

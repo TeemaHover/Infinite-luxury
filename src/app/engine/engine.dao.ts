@@ -3,25 +3,26 @@ import { BaseDao } from 'src/base/base.dao';
 import { AppDB } from 'src/db/pg/app.db';
 import { SqlBuilder, SqlCondition } from 'src/db/pg/sql.builder';
 
-const tableName = 'ORDERS';
+const tableName = 'ENGINES';
 
 @Injectable()
-export class OrderDao extends BaseDao {
+export class EngineDao extends BaseDao {
     constructor(private readonly _db: AppDB) {
         super();
     }
 
-    add = async (data: any) => {
-        await this._db.insert(tableName, data, ['id', 'productId', 'status', 'createdAt']);
+    add = async (engine: any) => {
+        await this._db.insert(tableName, engine, ['id', 'name', 'createdAt']);
     };
 
-    changeProduct = async (id: string, productId: string) => {
-        return await this._db._update(`UPDATE "${tableName}" SET "productId" = $1 WHERE "id" = $2`, [productId, id])
-    }
-
-    updateStatus = async (id: string, status: number) => {
-        return this._db._update(`UPDATE "${tableName}" SET "status" = $1 WHERE "id" = $2`, [status, id])
-    }
+    update = async (engine: any) => {
+        await this._db.update(
+            tableName,
+            engine,
+            ['name'],
+            [new SqlCondition('id', '=', engine.id)],
+        );
+    };
 
     getById = async (id: any) => {
         return await this._db.selectOne(
@@ -36,7 +37,7 @@ export class OrderDao extends BaseDao {
         const orderBy = this.orderBy(query.column, query.orderDirection, [
             'createdAt',
             'id',
-            'productId',
+            'name',
         ]);
 
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;

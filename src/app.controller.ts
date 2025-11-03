@@ -23,7 +23,13 @@ export class AppController {
     @Public()
     @Post('/customer/login')
     async customerLogin(@Request() req) {
-        return await this.authService.adminLogin(req.body);
+        return await this.authService.userLogin(req.body);
+    }
+
+    @Public()
+    @Post('/customer/register')
+    async customerRegister(@Request() req) {
+        return await this.authService.userRegister(req.body);
     }
 
     @Roles(ADMIN)

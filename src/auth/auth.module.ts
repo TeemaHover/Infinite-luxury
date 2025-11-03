@@ -5,11 +5,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './guards/jwt/jwt.strategy';
 import { AdminUserModule } from 'src/app/admin.user/admin.user.module';
+import { UserModule } from 'src/app/user/user.module';
 
 @Module({
     imports: [
         AdminUserModule,
         PassportModule,
+        UserModule,
 
         JwtModule.register({
             secret: jwtConstants.secret,
@@ -19,4 +21,4 @@ import { AdminUserModule } from 'src/app/admin.user/admin.user.module';
     providers: [AuthService, JwtStrategy],
     exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }

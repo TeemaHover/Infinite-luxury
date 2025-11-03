@@ -11,9 +11,21 @@ import { AllExceptionsFilter } from './utils/all-exceptions.filter';
 import { PostInterceptor } from './post.interceptor';
 import { ProductModule } from './app/product/product.module';
 import { OrderModule } from './app/order/order.module';
+import { BrandModule } from './app/brand/brand.module';
+import { EngineModule } from './app/engine/engine.module';
+import { UserModule } from './app/user/user.module';
 
 @Module({
-    imports: [ConfigModule.forRoot(), AuthModule, BaseModule, ProductModule,OrderModule],
+    imports: [
+        ConfigModule.forRoot(),
+        AuthModule,
+        BaseModule,
+        ProductModule,
+        OrderModule,
+        BrandModule,
+        EngineModule,
+        UserModule,
+    ],
     controllers: [AppController],
     providers: [
         AppService,
@@ -35,4 +47,4 @@ import { OrderModule } from './app/order/order.module';
         },
     ],
 })
-export class AppModule {}
+export class AppModule { }
