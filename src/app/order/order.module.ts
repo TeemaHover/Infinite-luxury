@@ -5,10 +5,11 @@ import { OrderDao } from './order.dao';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
 import { ProductModule } from '../product/product.module';
+import { UserModule } from '../user/user.module';
 @Module({
-    imports: [AppDbModule, BaseModule,ProductModule],
+    imports: [AppDbModule, BaseModule, UserModule, ProductModule],
     controllers: [OrderController],
     providers: [OrderService, OrderDao],
     exports: [OrderService],
 })
-export class OrderModule {}
+export class OrderModule { }

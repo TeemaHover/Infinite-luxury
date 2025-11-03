@@ -12,7 +12,18 @@ export class OrderDao extends BaseDao {
     }
 
     add = async (data: any) => {
-        await this._db.insert(tableName, data, ['id', 'productId', 'status', 'createdAt']);
+        await this._db.insert(tableName, data, [
+            'id',
+            'status',
+            'productId',
+            'userId',
+            'mobile',
+            'email',
+            'startDate',
+            'endDate',
+            'meta',
+            'createdAt',
+        ]);
     };
 
     changeProduct = async (id: string, productId: string) => {

@@ -36,7 +36,7 @@ export class UserService extends BaseService {
         return this.mapListResult(result.count, result.items, filter);
     }
 
-    async getById(id: any) {
+    public async getById(id: any) {
         return this.userDao.getById(id);
     }
 

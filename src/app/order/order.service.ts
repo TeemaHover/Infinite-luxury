@@ -4,17 +4,35 @@ import { AdminUserStatus, OrderStatus, ProductStatus } from 'src/base/constants'
 import { AppUtils } from 'src/utils/utils';
 import { OrderDao } from './order.dao';
 import { ProductService } from '../product/product.service';
+import { Order } from './order.model';
+import { UserService } from '../user/user.service';
 @Injectable()
 export class OrderService extends BaseService {
-    constructor(private orderDao: OrderDao, private productService: ProductService) {
+    constructor(
+        private orderDao: OrderDao,
+        private productService: ProductService,
+        private userService: UserService
+
+    ) {
         super();
     }
 
     public async add(payload: any): Promise<void> {
-        const order = {
+        const user = await this.userService.getById(payload.userId);
+        const product = await this.productService.getById(payload.productId);
+        const order: Order = {
             id: AppUtils.uuid4(),
-            productId: payload.productId,
             status: OrderStatus.Pending,
+            productId: payload.productId,
+            userId: payload.userId,
+            mobile: user.mobile,
+            email: user.email,
+            startDate: payload.startDate,
+            endDate: payload.endDate,
+            meta: {
+                productName: product.name,
+                userName: user.name,
+            },
             createdAt: new Date(),
         };
         await this.productService.updateStatus(payload.productId, ProductStatus.Unavailable)
