@@ -15,7 +15,6 @@ export class OrderController extends BaseController {
     @Public()
     @Post('/add')
     async add(@Request() req: DashRequest) {
-        console.log(req)
         await this.orderService.add(req.body);
     }
 
