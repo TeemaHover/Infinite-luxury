@@ -33,7 +33,11 @@ export class AdminUserService extends BaseService {
     }
 
     async getAdminUserById(filter: any) {
-        return this.userDao.getById(filter.id);
+        try {
+            return this.userDao.getById(filter.id);
+        } catch (error) {
+            return null;
+        }
     }
 
     async getById(id: any) {

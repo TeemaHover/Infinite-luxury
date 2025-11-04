@@ -22,10 +22,12 @@ export class ProductService extends BaseService {
             driverMinAge: payload.driveMinAge,
             seats: payload.seats,
             doors: payload.doors,
+            img: payload.img,
             luggageCapacity: payload.luggageCapacity,
             bluetooth: payload.bluetooth,
             aux: payload.aux,
             gps: payload.gps,
+            price: payload.price,
             createdAt: new Date(),
         };
         await this.productDao.add(product);
@@ -36,7 +38,7 @@ export class ProductService extends BaseService {
     }
 
     public async updateStatus(id: string, status: number) {
-        await this.productDao.updateStatus(id, status)
+        await this.productDao.updateStatus(id, status);
     }
 
     public async list(filter: any) {

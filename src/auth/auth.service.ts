@@ -10,7 +10,7 @@ export class AuthService {
         private adminUsersService: AdminUserService,
         private userService: UserService,
         private jwtService: JwtService,
-    ) { }
+    ) {}
 
     async validateAdminUser(username: string, pass: string): Promise<any> {
         const user = await this.adminUsersService.getAdminUser(username);
@@ -51,10 +51,7 @@ export class AuthService {
         };
     }
     async userLogin(user: any) {
-        const result = await this.validateUser(
-            user.username,
-            user.password,
-        );
+        const result = await this.validateUser(user.username, user.password);
         if (!result) {
             throw new UnauthorizedException();
         }
@@ -63,6 +60,7 @@ export class AuthService {
                 app: 'dash',
                 ...result,
             }),
+            id: result.id,
             name: result.name,
             username: result.username,
         };
@@ -73,10 +71,9 @@ export class AuthService {
             user.username,
         );
         if (usernameCount > 0) {
-            throw new Error("Ашиглах боломжгүй нэр байна.")
+            throw new Error('Ашиглах боломжгүй нэр байна.');
         }
 
-        return await this.userService.add(user)
+        return await this.userService.add(user);
     }
-
 }

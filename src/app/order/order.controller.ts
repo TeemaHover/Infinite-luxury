@@ -4,6 +4,7 @@ import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
 import { ADMIN } from 'src/base/constants';
 import { OrderService } from './order.service';
+import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 
 @Controller('order')
 export class OrderController extends BaseController {
@@ -11,9 +12,10 @@ export class OrderController extends BaseController {
         super(orderService);
     }
 
-    @Roles(ADMIN)
+    @Public()
     @Post('/add')
     async add(@Request() req: DashRequest) {
+        console.log(req)
         await this.orderService.add(req.body);
     }
 

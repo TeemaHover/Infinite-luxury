@@ -15,7 +15,16 @@ export class UserDao extends BaseDao {
     add = async (user: any) => {
         const saltOrRounds = 1;
         user.password = await bcrypt.hash(user.password, saltOrRounds);
-        await this._db.insert(tableName, user, ['id', 'name', 'password', 'status', 'mobile', 'email', 'username', 'createdAt']);
+        await this._db.insert(tableName, user, [
+            'id',
+            'name',
+            'password',
+            'status',
+            'mobile',
+            'email',
+            'username',
+            'createdAt',
+        ]);
     };
 
     update = async (user: any) => {
@@ -28,10 +37,11 @@ export class UserDao extends BaseDao {
     };
 
     getById = async (id: any) => {
-        return await this._db.selectOne(
+        const res = await this._db.selectOne(
             `SELECT * FROM "${tableName}" WHERE "id"=$1`,
             [id],
         );
+        return res
     };
 
     list = async (query) => {
@@ -66,7 +76,6 @@ export class UserDao extends BaseDao {
         );
     };
 
-
     get = async (username: any) => {
         return await this._db.selectOne(
             `SELECT * FROM "${tableName}" WHERE lower("username")= lower($1)`,
@@ -75,10 +84,11 @@ export class UserDao extends BaseDao {
     };
 
     countUsername = async (username: any) => {
-        return await this._db.count(`SELECT COUNT(*) FROM "${tableName}" WHERE "username" = $1`, [
-            username
-        ])
-    }
+        return await this._db.count(
+            `SELECT COUNT(*) FROM "${tableName}" WHERE "username" = $1`,
+            [username],
+        );
+    };
 
     buildCriteria(filter: any) {
         if (filter.name) {

@@ -84,9 +84,9 @@ export class AppDB {
             try {
                 const result = await client.query(sql, params);
                 if (result.rows.length === 0) {
-                    throw new AppDBResultNotFoundException(
-                        'Select One not found!',
-                    );
+                    // throw new AppDBResultNotFoundException(
+                    //     'Select One not found!',
+                    // );
                 } else if (result.rows.length === 1) {
                     return result.rows[0];
                 } else {

@@ -8,10 +8,12 @@ export class Product {
     driverMinAge: number;
     seats: number;
     doors: number;
+    img: string;
     luggageCapacity: string;
     bluetooth: boolean;
     aux: boolean;
     gps: boolean;
+    price: number;
     createdAt: Date;
 
     constructor(
@@ -27,7 +29,9 @@ export class Product {
         luggageCapacity: string,
         bluetooth: boolean,
         aux: boolean,
+        img: string,
         gps: boolean,
+        price: number,
         createdAt: Date,
     ) {
         this.id = id;
@@ -43,6 +47,8 @@ export class Product {
         this.bluetooth = bluetooth;
         this.aux = aux;
         this.gps = gps;
+        this.img = img;
         this.createdAt = createdAt;
+        this.price = price;
     }
 }
