@@ -21,6 +21,7 @@ export class OrderDao extends BaseDao {
             'email',
             'startDate',
             'endDate',
+            'desctiption',
             'meta',
             'createdAt',
         ]);
@@ -72,6 +73,7 @@ export class OrderDao extends BaseDao {
 
         const criteria = builder
             .conditionIfNotEmpty('name', 'ILIKE', filter.name)
+            .conditionIfNotEmpty('userId', '=', filter.userId)
             .criteria();
         return { builder, criteria };
     }

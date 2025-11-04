@@ -7,6 +7,7 @@ export class Order {
     email: string;
     startDate: Date;
     endDate: Date;
+    description:string;
     meta: any;
     createdAt: Date;
 
@@ -19,6 +20,7 @@ export class Order {
         email: string,
         startDate: Date,
         endDate: Date,
+        description:string,
         meta: any,
         createdAt: Date,
     ) {
@@ -30,6 +32,7 @@ export class Order {
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.description = description;
         this.meta = meta;
         this.createdAt = createdAt;
     }

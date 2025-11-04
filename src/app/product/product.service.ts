@@ -16,6 +16,7 @@ export class ProductService extends BaseService {
             id: AppUtils.uuid4(),
             name: payload.name,
             status: AdminUserStatus.Active,
+            price: payload.price,
             engine: payload.engine,
             transmission: payload.transmission,
             driveType: payload.driveType,
@@ -27,7 +28,6 @@ export class ProductService extends BaseService {
             bluetooth: payload.bluetooth,
             aux: payload.aux,
             gps: payload.gps,
-            price: payload.price,
             createdAt: new Date(),
         };
         await this.productDao.add(product);

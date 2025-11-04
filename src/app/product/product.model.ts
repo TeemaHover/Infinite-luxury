@@ -20,6 +20,7 @@ export class Product {
         id: string,
         name: string,
         status: number,
+        price: number,
         engine: string,
         transmission: number,
         driveType: number,
@@ -31,12 +32,12 @@ export class Product {
         aux: boolean,
         img: string,
         gps: boolean,
-        price: number,
         createdAt: Date,
     ) {
         this.id = id;
         this.name = name;
         this.status = status;
+        this.price = price;
         this.engine = engine;
         this.transmission = transmission;
         this.driveType = driveType;
@@ -49,6 +50,6 @@ export class Product {
         this.gps = gps;
         this.img = img;
         this.createdAt = createdAt;
-        this.price = price;
+        
     }
 }

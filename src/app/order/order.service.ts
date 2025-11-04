@@ -29,9 +29,11 @@ export class OrderService extends BaseService {
             email: user.email,
             startDate: payload.startDate,
             endDate: payload.endDate,
+            description:payload.description,
             meta: {
                 productName: product.name,
                 userName: user.name,
+                productPrice: product.price,
             },
             createdAt: new Date(),
         };

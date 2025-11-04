@@ -17,6 +17,7 @@ export class ProductDao extends BaseDao {
                 'id',
                 'name',
                 'status',
+                'price',
                 'engine',
                 'transmission',
                 'driveType',

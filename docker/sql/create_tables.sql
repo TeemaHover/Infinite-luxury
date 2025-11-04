@@ -39,6 +39,15 @@ CREATE TABLE IF NOT EXISTS "PRODUCTS" (
     CONSTRAINT "fk_products_engine" FOREIGN KEY ("engineId") REFERENCES "ENGINES"("id")
 );
 
+
+CREATE TABLE IF NOT EXISTS "IMAGES" (
+    "id" VARCHAR(32) PRIMARY KEY,
+    "productId" VARCHAR(32) NOT NULL,
+    "url" VARCHAR(1000) NOT NULL,
+    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "fk_products" FOREIGN KEY ("productId") REFERENCES "PRODUCTS"("id")
+);
+
 create table IF NOT EXISTS "ORDERS"(
     "id" VARCHAR(32) primary KEY,
     "status" INTEGER not null,
@@ -48,6 +57,7 @@ create table IF NOT EXISTS "ORDERS"(
     "email" VARCHAR(32) not null,
     "startDate" TIMESTAMP WITH TIME ZONE not null,
     "endDate" TIMESTAMP WITH TIME ZONE not null,
+    "description" VARCHAR(500),
     "meta" JSONB,
     "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "fk_orders_product" FOREIGN KEY ("productId") REFERENCES "PRODUCTS"("id")
