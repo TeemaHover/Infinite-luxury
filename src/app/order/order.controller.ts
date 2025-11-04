@@ -37,7 +37,7 @@ export class OrderController extends BaseController {
     }
 
     @Public()
-    @Get('/user/order/list')
+    @Get('/user/order')
     async userOrderlist(@Request() req: DashRequest) {
         if(!req.query.userId){
             throw new UnauthorizedException()
