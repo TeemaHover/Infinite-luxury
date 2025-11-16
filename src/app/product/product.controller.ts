@@ -11,7 +11,8 @@ import { ProductImageService } from './product.image.service';
 export class ProductController extends BaseController {
     constructor(
         private readonly productService: ProductService,
-        private readonly imageService: ProductImageService) {
+        private readonly imageService: ProductImageService,
+    ) {
         super(productService);
     }
 
@@ -48,6 +49,12 @@ export class ProductController extends BaseController {
     @Get('/list')
     async list(@Request() req: DashRequest) {
         return await this.productService.list(req.query);
+    }
+
+    @Public()
+    @Get('/order-dates/:productId')
+    async getCarOrderDates(@Request() req: DashRequest) {
+        return await this.productService.getCarOrderDates(req.params.productId);
     }
 
     @Public()

@@ -106,19 +106,27 @@ export class ProductDao extends BaseDao {
         return { count: countResult.count, items: result };
     };
 
+    getCardOrderDates = async (query: any) => {
+        const { builder, criteria } = this.buildCriteria(query);
+
+        const sql = `SELECT * FROM "ORDERS" ${criteria}`;
+        const result = await this._db.select(sql, builder.values);
+        return result;
+    };
+
     buildCriteria(filter: any) {
         if (filter.name) {
             filter.name = `%${filter.name}%`;
         }
 
-        if (filter.username) {
-            filter.username = `%${filter.username}%`;
-        }
+        console.log('filter:', filter);
 
         const builder = new SqlBuilder(filter);
 
         const criteria = builder
             .conditionIfNotEmpty('name', 'ILIKE', filter.name)
+            .conditionIfNotEmpty('productId', '=', filter.productId)
+            .conditionIfNotEmpty('status', '>=', filter.status)
             .criteria();
         return { builder, criteria };
     }

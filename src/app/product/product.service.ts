@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
-import { AdminUserStatus } from 'src/base/constants';
+import { AdminUserStatus, OrderStatus } from 'src/base/constants';
 import { AppUtils } from 'src/utils/utils';
 import { ProductDao } from './product.dao';
 import { Product } from './product.model';
+import { ProductImageDao } from './product.image.dao';
 
 @Injectable()
 export class ProductService extends BaseService {
-    constructor(private productDao: ProductDao) {
+    constructor(
+        private productDao: ProductDao,
+        private productImageDao: ProductImageDao,
+    ) {
         super();
     }
 
@@ -48,14 +52,63 @@ export class ProductService extends BaseService {
         const result = await this.productDao.list(filter);
         return this.mapListResult(result.count, result.items, filter);
     }
+
     public async lists(filter: any) {
         this.adjustFilterForPaging(filter);
         const result = await this.productDao.lists(filter);
         return this.mapListResult(result.count, result.items, filter);
     }
 
+    async getCarOrderDates(productId: any) {
+        const orders = await this.productDao.getCardOrderDates({
+            status: OrderStatus.Pending,
+            productId,
+        });
+        const finalMap: Record<number, Set<number>> = {};
+
+        for (const order of orders) {
+            const ranges = this.getMonthDayRanges(
+                order.startDate,
+                order.endDate,
+            );
+
+            for (const month in ranges) {
+                const m = Number(month);
+                if (!finalMap[m]) finalMap[m] = new Set();
+
+                ranges[m].forEach((d) => finalMap[m].add(d));
+            }
+        }
+
+        return Object.entries(finalMap).map(([month, days]) => ({
+            month: Number(month),
+            days: Array.from(days).sort((a, b) => a - b),
+        }));
+    }
+    getMonthDayRanges(startDate: string, endDate: string) {
+        let start = AppUtils.moment(AppUtils.parseDate(startDate)).startOf(
+            'day',
+        );
+        let end = AppUtils.moment(AppUtils.parseDate(endDate)).startOf('day');
+
+        const result: Record<number, Set<number>> = {};
+
+        while (start.isSameOrBefore(end, 'day')) {
+            const month = start.month() + 1;
+            const day = start.date();
+
+            if (!result[month]) result[month] = new Set();
+            result[month].add(day);
+
+            start = start.add(1, 'day');
+        }
+
+        return result;
+    }
     async getById(id: any) {
-        return this.productDao.getById(id);
+        const product = await this.productDao.getById(id);
+        product.images = await this.productImageDao.list({ productId: id });
+        return product;
     }
 
     async search(query) {

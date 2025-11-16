@@ -1,4 +1,10 @@
-import { Controller, Get, Post, Request, UnauthorizedException } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Request,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
@@ -39,8 +45,8 @@ export class OrderController extends BaseController {
     @Public()
     @Get('/user/order')
     async userOrderlist(@Request() req: DashRequest) {
-        if(!req.query.userId){
-            throw new UnauthorizedException()
+        if (!req.query.userId) {
+            throw new UnauthorizedException();
         }
         return await this.orderService.list(req.query);
     }
