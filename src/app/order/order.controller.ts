@@ -51,6 +51,12 @@ export class OrderController extends BaseController {
         return await this.orderService.list(req.query);
     }
 
+    @Public()
+    @Get('/user/summary/:userId')
+    async userOrderSummary(@Request() req: DashRequest) {
+        return await this.orderService.orderSummary(req.params.userId);
+    }
+
     @Roles(ADMIN)
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {

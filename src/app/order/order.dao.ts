@@ -28,12 +28,18 @@ export class OrderDao extends BaseDao {
     };
 
     changeProduct = async (id: string, productId: string) => {
-        return await this._db._update(`UPDATE "${tableName}" SET "productId" = $1 WHERE "id" = $2`, [productId, id])
-    }
+        return await this._db._update(
+            `UPDATE "${tableName}" SET "productId" = $1 WHERE "id" = $2`,
+            [productId, id],
+        );
+    };
 
     updateStatus = async (id: string, status: number) => {
-        return this._db._update(`UPDATE "${tableName}" SET "status" = $1 WHERE "id" = $2`, [status, id])
-    }
+        return this._db._update(
+            `UPDATE "${tableName}" SET "status" = $1 WHERE "id" = $2`,
+            [status, id],
+        );
+    };
 
     getById = async (id: any) => {
         return await this._db.selectOne(
@@ -42,21 +48,25 @@ export class OrderDao extends BaseDao {
         );
     };
 
-    list = async (query) => {
+    list = async (query, excel = false) => {
         const { builder, criteria } = this.buildCriteria(query);
 
-        const orderBy = this.orderBy(query.column, query.orderDirection, [
-            'createdAt',
-            'id',
-            'productId',
-        ]);
+        const orderBy = excel
+            ? ''
+            : this.orderBy(query.column, query.orderDirection, [
+                  'createdAt',
+                  'id',
+                  'productId',
+              ]);
+
+        const extra = excel ? '' : `limit ${query.limit} offset ${query.skip}`;
 
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
         const countResult = await this._db.selectOne(countSql, builder.values);
         const sql = `SELECT * FROM "${tableName}" ${criteria}
-            ${orderBy} limit ${query.limit} offset ${query.skip}`;
+            ${orderBy} ${extra}`;
         const result = await this._db.select(sql, builder.values);
-        console.log(result)
+        console.log(result);
         return { count: countResult.count, items: result };
     };
 

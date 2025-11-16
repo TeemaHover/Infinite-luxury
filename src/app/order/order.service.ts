@@ -77,6 +77,41 @@ export class OrderService extends BaseService {
         return this.mapListResult(result.count, result.items, filter);
     }
 
+    public async orderSummary(userId: string) {
+        const orders = await this.orderDao.list({ userId }, true);
+        const summary = {
+            totalOrders: 0,
+            statusCount: {
+                pending: 0,
+                approved: 0,
+            },
+            totalDays: 0,
+        };
+
+        for (const order of orders.items) {
+            if (order.status === OrderStatus.Cancelled) {
+                continue;
+            }
+
+            summary.totalOrders++;
+
+            if (order.status === OrderStatus.Pending) {
+                summary.statusCount.pending++;
+            } else if (order.status === OrderStatus.Approved) {
+                summary.statusCount.approved++;
+            }
+
+            const start = AppUtils.moment(order.startDate).startOf('day');
+            const end = AppUtils.moment(order.endDate).endOf('day');
+
+            const days = Math.max(1, end.diff(start, 'days') + 1);
+
+            summary.totalDays += days;
+        }
+
+        return summary;
+    }
+
     async getById(id: any) {
         return this.orderDao.getById(id);
     }
