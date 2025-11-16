@@ -17,15 +17,17 @@ export class ProductService extends BaseService {
             name: payload.name,
             status: AdminUserStatus.Active,
             price: payload.price,
-            engine: payload.engine,
+            engineId: payload.engineId,
             transmission: payload.transmission,
-            driveType: payload.driveType,
-            driverMinAge: payload.driveMinAge,
+            drive_type: payload.drive_type,
+            driver_min_age: payload.driver_min_age,
             seats: payload.seats,
             doors: payload.doors,
             img: payload.img,
-            luggageCapacity: payload.luggageCapacity,
+            luggage_capacity: payload.luggage_capacity,
             bluetooth: payload.bluetooth,
+            description: payload.description,
+            brandId: payload.brandId,
             aux: payload.aux,
             gps: payload.gps,
             createdAt: new Date(),
@@ -44,6 +46,11 @@ export class ProductService extends BaseService {
     public async list(filter: any) {
         this.adjustFilterForPaging(filter);
         const result = await this.productDao.list(filter);
+        return this.mapListResult(result.count, result.items, filter);
+    }
+    public async lists(filter: any) {
+        this.adjustFilterForPaging(filter);
+        const result = await this.productDao.lists(filter);
         return this.mapListResult(result.count, result.items, filter);
     }
 

@@ -74,6 +74,6 @@ export class AuthService {
             throw new Error('Ашиглах боломжгүй нэр байна.');
         }
 
-        return await this.userService.add(user);
+        await this.userService.add(user);
     }
 }

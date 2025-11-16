@@ -12,24 +12,26 @@ export class ProductDao extends BaseDao {
     }
 
     add = async (product: any) => {
-        await this._db.insert(tableName, product,
-            [
-                'id',
-                'name',
-                'status',
-                'price',
-                'engine',
-                'transmission',
-                'driveType',
-                'driveMinAge',
-                'seats',
-                'doors',
-                'luggageCapacity',
-                'bluetooth',
-                'aux',
-                'gps',
-                'createdAt'
-            ]);
+        await this._db.insert(tableName, product, [
+            'id',
+            'name',
+            'status',
+            'price',
+            'engineId',
+            'brandId',
+            'transmission',
+            'drive_type',
+            'driver_min_age',
+            'seats',
+            'doors',
+            'luggage_capacity',
+            'bluetooth',
+            'img',
+            'description',
+            'aux',
+            'gps',
+            'createdAt',
+        ]);
     };
 
     update = async (product: any) => {
@@ -38,13 +40,13 @@ export class ProductDao extends BaseDao {
             product,
             [
                 'name',
-                'engine',
+                'engineId',
                 'transmission',
-                'driveType',
-                'driveMinAge',
+                'drive_type',
+                'driver_min_age',
                 'seats',
                 'doors',
-                'luggageCapacity',
+                'luggage_capacity',
                 'bluetooth',
                 'aux',
                 'gps',
@@ -80,7 +82,24 @@ export class ProductDao extends BaseDao {
 
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
         const countResult = await this._db.selectOne(countSql, builder.values);
-        const sql = `SELECT "id", "name" FROM "${tableName}" ${criteria}
+        const sql = `SELECT "id", "name", "img" FROM "${tableName}" ${criteria}
+            ${orderBy} limit ${query.limit} offset ${query.skip}`;
+        const result = await this._db.select(sql, builder.values);
+
+        return { count: countResult.count, items: result };
+    };
+    lists = async (query) => {
+        const { builder, criteria } = this.buildCriteria(query);
+
+        const orderBy = this.orderBy(query.column, query.orderDirection, [
+            'createdAt',
+            'id',
+            'name',
+        ]);
+
+        const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
+        const countResult = await this._db.selectOne(countSql, builder.values);
+        const sql = `SELECT * FROM "${tableName}" ${criteria}
             ${orderBy} limit ${query.limit} offset ${query.skip}`;
         const result = await this._db.select(sql, builder.values);
 

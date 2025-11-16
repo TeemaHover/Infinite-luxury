@@ -3,7 +3,6 @@ import { DEFAULT_LIMIT } from './constants';
 import { Meta } from './base.interface';
 import { DashUser } from 'src/auth/extentions';
 import * as XLSX from 'xlsx';
-import { File } from 'multer';
 import axios from 'axios';
 
 @Injectable()
@@ -68,16 +67,16 @@ export class BaseService {
         return Buffer.from(base64, 'base64');
     }
 
-    public async parseExcelFile(file: File) {
-        const buffer = this.decodeBase64File(file.base64);
-        const workbook = XLSX.read(buffer, { type: 'buffer' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        return XLSX.utils.sheet_to_json(worksheet, {
-            raw: false, // Forces cell text formatting (e.g. '0123' stays '0123')
-            defval: null, // Optional: fills empty cells with empty string
-        });
-    }
+    // public async parseExcelFile(file: File) {
+    //     const buffer = this.decodeBase64File(file.base64);
+    //     const workbook = XLSX.read(buffer, { type: 'buffer' });
+    //     const sheetName = workbook.SheetNames[0];
+    //     const worksheet = workbook.Sheets[sheetName];
+    //     return XLSX.utils.sheet_to_json(worksheet, {
+    //         raw: false, // Forces cell text formatting (e.g. '0123' stays '0123')
+    //         defval: null, // Optional: fills empty cells with empty string
+    //     });
+    // }
 
     public async queueRequest(url: string, params: any) {
         const config = {

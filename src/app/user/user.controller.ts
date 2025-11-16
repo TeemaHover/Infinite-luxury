@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request } from '@nestjs/common';
+import { Controller, Get, Post, Req, Request } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
@@ -34,5 +34,9 @@ export class UserController extends BaseController {
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
         return await this.userService.getById(req.params.id);
+    }
+    @Get('/me')
+    async me(@Req() { user }) {
+        return user;
     }
 }

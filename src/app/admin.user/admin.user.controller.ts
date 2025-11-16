@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request } from '@nestjs/common';
+import { Controller, Get, Post, Req, Request } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { AdminUserService } from './admin.user.service';
 import { DashRequest } from 'src/auth/extentions';
@@ -9,6 +9,12 @@ import { ADMIN } from 'src/base/constants';
 export class AdminUserController extends BaseController {
     constructor(private readonly userService: AdminUserService) {
         super(userService);
+    }
+
+    @Roles(ADMIN)
+    @Get('me')
+    async me(@Req() { user }) {
+        return user;
     }
 
     @Roles(ADMIN)

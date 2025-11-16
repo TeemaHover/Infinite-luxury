@@ -39,6 +39,11 @@ export class ProductController extends BaseController {
         await this.imageService.delete(req.params.id);
     }
 
+    @Roles(ADMIN)
+    @Get('/lists')
+    async lists(@Request() req: DashRequest) {
+        return await this.productService.lists(req.query);
+    }
     @Public()
     @Get('/list')
     async list(@Request() req: DashRequest) {

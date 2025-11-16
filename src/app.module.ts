@@ -14,6 +14,7 @@ import { OrderModule } from './app/order/order.module';
 import { BrandModule } from './app/brand/brand.module';
 import { EngineModule } from './app/engine/engine.module';
 import { UserModule } from './app/user/user.module';
+import { FileService } from './file.service';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { UserModule } from './app/user/user.module';
     controllers: [AppController],
     providers: [
         AppService,
+        FileService,
         {
             provide: APP_GUARD,
             useClass: JwtAuthGuard,
@@ -47,4 +49,4 @@ import { UserModule } from './app/user/user.module';
         },
     ],
 })
-export class AppModule { }
+export class AppModule {}

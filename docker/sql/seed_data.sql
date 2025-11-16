@@ -19,14 +19,14 @@ INSERT INTO "ENGINES" ("id", "name") VALUES
 INSERT INTO "PRODUCTS" (
     "id", "name", "status", "brandId", "engineId",
     "transmission", "drive_type", "driver_min_age", "seats", "doors",
-    "luggage_capacity", "bluetooth", "aux", "gps"
+    "luggage_capacity", "bluetooth", "aux", "gps","price"
 ) VALUES
-('p1', 'Toyota Corolla Hybrid', 10, 'b1', 'e1', 1, 2, 21, 5, 4, '3 medium suitcases', TRUE, TRUE, TRUE),
-('p2', 'BMW 340i', 10, 'b2', 'e2', 2, 2, 25, 5, 4, '3 large suitcases', TRUE, TRUE, TRUE),
-('p3', 'Ford Mustang GT', 10, 'b4', 'e3', 2, 2, 25, 4, 2, '2 medium suitcases', TRUE, TRUE, TRUE),
-('p4', 'Tesla Model S', 10, 'b3', 'e4', 2, 2, 25, 5, 4, '4 large suitcases', TRUE, FALSE, TRUE),
-('p5', 'Audi A4', 10, 'b5', 'e5', 1, 2, 23, 5, 4, '3 medium suitcases', TRUE, TRUE, TRUE),
-('p6', 'Ford Raptor', 10, 'b4', 'e6', 2, 4, 27, 5, 4, '5 large suitcases', TRUE, TRUE, TRUE);
+('p1', 'Toyota Corolla Hybrid', 10, 'b1', 'e1', 1, 2, 21, 5, 4, '3 medium suitcases', TRUE, TRUE, TRUE, 1500),
+('p2', 'BMW 340i', 10, 'b2', 'e2', 2, 2, 25, 5, 4, '3 large suitcases', TRUE, TRUE, TRUE, 1000),
+('p3', 'Ford Mustang GT', 10, 'b4', 'e3', 2, 2, 25, 4, 2, '2 medium suitcases', TRUE, TRUE, TRUE, 1200),
+('p4', 'Tesla Model S', 10, 'b3', 'e4', 2, 2, 25, 5, 4, '4 large suitcases', TRUE, FALSE, TRUE, 1300),
+('p5', 'Audi A4', 10, 'b5', 'e5', 1, 2, 23, 5, 4, '3 medium suitcases', TRUE, TRUE, TRUE, 1800),
+('p6', 'Ford Raptor', 10, 'b4', 'e6', 2, 4, 27, 5, 4, '5 large suitcases', TRUE, TRUE, TRUE, 1500);
 
 INSERT INTO "USERS" ("id", "name", "status", "mobile", "email", "username", "password") VALUES
 ('u1', 'Alice Johnson', 10, '+15551230001', 'alice@example.com', 'alicej', '$2b$04$iuWa.uWhGjyhmWcd1ktPG.pExRxFG2r8F/Jw77VaDYkPQDoYkxbMO'),

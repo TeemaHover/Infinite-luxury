@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS "PRODUCTS" (
     "name" VARCHAR(32) NOT NULL,
     "status" INTEGER NOT NULL,
     "brandId" VARCHAR(32) NOT NULL,
+
     "engineId" VARCHAR(32) NOT NULL,
     "transmission" INTEGER NOT NULL,
     "drive_type" INTEGER NOT NULL,
@@ -34,6 +35,9 @@ CREATE TABLE IF NOT EXISTS "PRODUCTS" (
     "bluetooth" BOOLEAN DEFAULT FALSE,
     "aux" BOOLEAN DEFAULT FALSE,
     "gps" BOOLEAN DEFAULT FALSE,
+    "price" NUMERIC DEFAULT 0,
+    "description" VARCHAR(500),
+    "img" VARCHAR,
     "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "fk_products_brand" FOREIGN KEY ("brandId") REFERENCES "BRANDS"("id"),
     CONSTRAINT "fk_products_engine" FOREIGN KEY ("engineId") REFERENCES "ENGINES"("id")

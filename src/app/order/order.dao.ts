@@ -56,7 +56,7 @@ export class OrderDao extends BaseDao {
         const sql = `SELECT * FROM "${tableName}" ${criteria}
             ${orderBy} limit ${query.limit} offset ${query.skip}`;
         const result = await this._db.select(sql, builder.values);
-
+        console.log(result)
         return { count: countResult.count, items: result };
     };
 

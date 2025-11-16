@@ -18,8 +18,8 @@ export const OrderStatus = {
 }
 
 export const ProductStatus = {
-    Available: 0,
-    Unavailable: 10,
+    Available: 10,
+    Unavailable: 0,
 }
 
 export const UserStatus = {

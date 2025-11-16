@@ -2,14 +2,16 @@ export class Product {
     id: string;
     name: string;
     status: number;
-    engine: string;
     transmission: number;
-    driveType: number;
-    driverMinAge: number;
+    drive_type: number;
+    driver_min_age: number;
     seats: number;
     doors: number;
     img: string;
-    luggageCapacity: string;
+    luggage_capacity: string;
+    brandId: string;
+    engineId: string;
+    description: string;
     bluetooth: boolean;
     aux: boolean;
     gps: boolean;
@@ -21,13 +23,15 @@ export class Product {
         name: string,
         status: number,
         price: number,
-        engine: string,
+        engineId: string,
+        brandId: string,
         transmission: number,
-        driveType: number,
-        driverMinAge: number,
+        drive_type: number,
+        driver_min_age: number,
         seats: number,
         doors: number,
-        luggageCapacity: string,
+        luggage_capacity: string,
+        description: string,
         bluetooth: boolean,
         aux: boolean,
         img: string,
@@ -38,18 +42,19 @@ export class Product {
         this.name = name;
         this.status = status;
         this.price = price;
-        this.engine = engine;
+        this.brandId = brandId;
+        this.engineId = engineId;
+        this.description = description;
         this.transmission = transmission;
-        this.driveType = driveType;
-        this.driverMinAge = driverMinAge;
+        this.drive_type = drive_type;
+        this.driver_min_age = driver_min_age;
         this.seats = seats;
         this.doors = doors;
-        this.luggageCapacity = luggageCapacity;
+        this.luggage_capacity = luggage_capacity;
         this.bluetooth = bluetooth;
         this.aux = aux;
         this.gps = gps;
         this.img = img;
         this.createdAt = createdAt;
-        
     }
 }
