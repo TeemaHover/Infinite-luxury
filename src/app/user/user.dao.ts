@@ -103,6 +103,7 @@ export class UserDao extends BaseDao {
 
         const criteria = builder
             .conditionIfNotEmpty('name', 'ILIKE', filter.name)
+            .conditionIfNotEmpty('status', '=', filter.status)
             .criteria();
         return { builder, criteria };
     }

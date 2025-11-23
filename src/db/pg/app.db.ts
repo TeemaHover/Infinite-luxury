@@ -185,7 +185,7 @@ export class AppDB {
     async insert(tableName: string, data: any, columns: any[]) {
         const builder = new SqlBuilder(data, columns);
         const { cols, indexes } = builder.create();
-        await this._insert(
+        return await this._insert(
             `INSERT INTO "${tableName}" (${cols}) VALUES (${indexes})`,
             builder.values,
         );

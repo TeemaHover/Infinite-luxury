@@ -12,7 +12,7 @@ export class ProductDao extends BaseDao {
     }
 
     add = async (product: any) => {
-        await this._db.insert(tableName, product, [
+        const res = await this._db.insert(tableName, product, [
             'id',
             'name',
             'status',
@@ -32,6 +32,7 @@ export class ProductDao extends BaseDao {
             'gps',
             'createdAt',
         ]);
+        return res;
     };
 
     update = async (product: any) => {
@@ -126,6 +127,8 @@ export class ProductDao extends BaseDao {
         const criteria = builder
             .conditionIfNotEmpty('name', 'ILIKE', filter.name)
             .conditionIfNotEmpty('productId', '=', filter.productId)
+            .conditionIfNotEmpty('engineId', '=', filter.engineId)
+            .conditionIfNotEmpty('brandId', '=', filter.brandId)
             .conditionIfNotEmpty('status', '>=', filter.status)
             .criteria();
         return { builder, criteria };
