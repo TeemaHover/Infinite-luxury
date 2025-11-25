@@ -33,6 +33,7 @@ export class OrderService extends BaseService {
             startDate: payload.startDate,
             endDate: payload.endDate,
             description: payload.description,
+            username: payload.username,
             meta: {
                 productName: product.name,
                 productImg: product.img,

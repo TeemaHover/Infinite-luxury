@@ -8,6 +8,7 @@ export class Order {
     startDate: Date;
     endDate: Date;
     description:string;
+    username:string;
     meta: any;
     createdAt: Date;
 
@@ -15,6 +16,7 @@ export class Order {
         id: string,
         status: number,
         productId: string,
+        username: string,
         userId: string,
         mobile: string,
         email: string,
@@ -27,6 +29,7 @@ export class Order {
         this.id = id;
         this.status = status;
         this.productId = productId;
+        this.username = username;
         this.userId = userId;
         this.mobile = mobile;
         this.email = email;
