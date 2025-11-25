@@ -7,7 +7,7 @@ export class BaseDao {
     ): string {
         const prefix = alias ? `${alias}.` : '';
 
-        const upperOrderDir = orderDirection.toUpperCase();
+        const upperOrderDir = orderDirection?.toUpperCase();
         const validDirections = ['ASC', 'DESC'];
         const finalOrderDirection = validDirections.includes(upperOrderDir)
             ? upperOrderDir
@@ -16,7 +16,7 @@ export class BaseDao {
         const columnsArray = Array.isArray(columns) ? columns : [columns];
 
         const orderParts = columnsArray.map((colExpr) => {
-            const matchedCols = colExpr.match(/"[a-zA-Z0-9_]+"/g);
+            const matchedCols = colExpr?.match(/"[a-zA-Z0-9_]+"/g);
 
             if (matchedCols) {
                 for (const match of matchedCols) {

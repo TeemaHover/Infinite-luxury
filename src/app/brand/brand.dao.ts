@@ -79,4 +79,10 @@ export class BrandDao extends BaseDao {
             builder.values,
         );
     }
+    delete = async (id: string) => {
+        return await this._db.select(
+            `DELETE FROM "${tableName}" WHERE "id"=$1`,
+            [id],
+        );
+    };
 }

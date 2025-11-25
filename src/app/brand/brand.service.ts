@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../base/base.service';
-import { AdminUserStatus } from 'src/base/constants';
 import { AppUtils } from 'src/utils/utils';
 import { BrandDao } from './brand.dao';
 import { Brand } from './brand.model';
@@ -36,5 +35,9 @@ export class BrandService extends BaseService {
 
     async search(query) {
         return await this.brandDao.search(query);
+    }
+
+    async delete(id: string) {
+        return await this.brandDao.delete(id);
     }
 }

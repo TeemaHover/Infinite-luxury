@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Request } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
@@ -22,6 +22,11 @@ export class BrandController extends BaseController {
     @Post('/update')
     async update(@Request() req: DashRequest) {
         await this.brandService.update(req.body);
+    }
+    @Roles(ADMIN)
+    @Delete('/:id')
+    async delete(@Param('id') id: string, @Request() req: DashRequest) {
+        await this.brandService.delete(id);
     }
 
     @Public()

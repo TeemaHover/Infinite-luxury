@@ -46,7 +46,9 @@ export class ProductImageDao extends BaseDao {
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
         const countResult = await this._db.selectOne(countSql, builder.values);
         const sql = `SELECT * FROM "${tableName}" ${criteria}
-            ${orderBy} limit ${query.limit} offset ${query.skip}`;
+            ${orderBy} ${query.limit ? 'limit ' + query.limit : ''}  ${
+            query.skip ? 'offset ' + query.skip : ''
+        }`;
         const result = await this._db.select(sql, builder.values);
 
         return { count: countResult.count, items: result };

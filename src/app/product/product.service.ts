@@ -16,6 +16,7 @@ export class ProductService extends BaseService {
     }
 
     public async add(payload: any): Promise<void> {
+        const images = payload.images;
         const product: Product = {
             id: AppUtils.uuid4(),
             name: payload.name,
@@ -36,7 +37,19 @@ export class ProductService extends BaseService {
             gps: payload.gps,
             createdAt: new Date(),
         };
-        await this.productDao.add(product);
+        const res = await this.productDao.add(product);
+        if (images) {
+            await Promise.all(
+                images.map((image) => {
+                    this.productImageDao.add({
+                        id: AppUtils.uuid4(),
+                        productId: res,
+                        url: image,
+                        createdAt: new Date(),
+                    });
+                }),
+            );
+        }
     }
 
     public async update(payload: any): Promise<void> {
@@ -105,9 +118,11 @@ export class ProductService extends BaseService {
 
         return result;
     }
+
     async getById(id: any) {
         const product = await this.productDao.getById(id);
-        product.images = await this.productImageDao.list({ productId: id });
+        const images = await this.productImageDao.list({ productId: id });
+        product.images = images?.items ?? [];
         return product;
     }
 

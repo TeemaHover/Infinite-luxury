@@ -162,7 +162,7 @@ export class AppDB {
     private async _insert(sql: string, params: any): Promise<void> {
         return this.executeQuery(async (client) => {
             try {
-                await client.query(sql, params);
+                return await client.query(sql, params);
             } catch (e) {
                 console.error('Insert error: ', sql, params);
                 throw e;
@@ -182,15 +182,19 @@ export class AppDB {
         });
     }
 
-    async insert(tableName: string, data: any, columns: any[]) {
-        const builder = new SqlBuilder(data, columns);
-        const { cols, indexes } = builder.create();
-        return await this._insert(
-            `INSERT INTO "${tableName}" (${cols}) VALUES (${indexes})`,
-            builder.values,
-        );
-    }
+    async insert(tableName: string, data: any, columns: string[]) {
+        try {
+            const builder = new SqlBuilder(data, columns);
+            const { cols, indexes } = builder.create();
 
+            const sql = `INSERT INTO "${tableName}" (${cols}) VALUES (${indexes}) RETURNING id`;
+
+            const row = await this.selectOne(sql, builder.values);
+            return row.id;
+        } catch (error) {
+            console.log(error);
+        }
+    }
     async insertMany(
         tableName: string,
         rows: any[],
