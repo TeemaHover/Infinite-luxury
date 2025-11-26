@@ -46,7 +46,7 @@ export class OrderController extends BaseController {
     @Roles(ADMIN, CUSTOMER)
     @Get('/user/order')
     async userOrderlist(@Request() req: DashRequest) {
-        // req.query.userId = req.user.id;
+        req.query.userId = req.user.customer.id;
         return await this.orderService.list(req.query);
     }
 
