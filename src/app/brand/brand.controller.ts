@@ -2,7 +2,7 @@ import { Controller, Delete, Get, Param, Post, Request } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
-import { ADMIN } from 'src/base/constants';
+import { ADMIN, CUSTOMER } from 'src/base/constants';
 import { BrandService } from './brand.service';
 import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 
@@ -29,13 +29,13 @@ export class BrandController extends BaseController {
         await this.brandService.delete(id);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/list')
     async list(@Request() req: DashRequest) {
         return await this.brandService.list(req.query);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
         return await this.brandService.getById(req.params.id);

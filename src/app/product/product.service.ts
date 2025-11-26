@@ -30,14 +30,12 @@ export class ProductService extends BaseService {
             doors: payload.doors,
             img: payload.img,
             luggage_capacity: payload.luggage_capacity,
-            bluetooth: payload.bluetooth,
             description: payload.description,
             brandId: payload.brandId,
-            aux: payload.aux,
-            gps: payload.gps,
             createdAt: new Date(),
         };
         const res = await this.productDao.add(product);
+        console.log('res:', res);
         if (images) {
             await Promise.all(
                 images.map((image) => {
@@ -50,6 +48,8 @@ export class ProductService extends BaseService {
                 }),
             );
         }
+
+        return res;
     }
 
     public async update(payload: any): Promise<void> {

@@ -32,9 +32,6 @@ CREATE TABLE IF NOT EXISTS "PRODUCTS" (
     "seats" INTEGER NOT NULL,
     "doors" INTEGER NOT NULL,
     "luggage_capacity" VARCHAR(200) NOT NULL,
-    "bluetooth" BOOLEAN DEFAULT FALSE,
-    "aux" BOOLEAN DEFAULT FALSE,
-    "gps" BOOLEAN DEFAULT FALSE,
     "price" NUMERIC DEFAULT 0,
     "description" VARCHAR(500),
     "img" VARCHAR,
@@ -70,6 +67,7 @@ create table IF NOT EXISTS "ORDERS"(
 create table IF NOT EXISTS "USERS"(
     "id" VARCHAR(32) primary KEY,
     "name" VARCHAR(50) not null,
+    "role" INTEGER not null,
     "status" INTEGER not null,
     "mobile" VARCHAR(128) not null,
     "email" VARCHAR(32) not null,

@@ -193,6 +193,7 @@ export class AppDB {
             return row.id;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
     async insertMany(

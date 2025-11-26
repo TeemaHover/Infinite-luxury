@@ -8,7 +8,7 @@ import {
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
-import { ADMIN } from 'src/base/constants';
+import { ADMIN, CUSTOMER } from 'src/base/constants';
 import { OrderService } from './order.service';
 import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 
@@ -18,9 +18,10 @@ export class OrderController extends BaseController {
         super(orderService);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Post('/add')
     async add(@Request() req: DashRequest) {
+        console.log('req:', req.user);
         await this.orderService.add(req.body);
     }
 
@@ -42,22 +43,20 @@ export class OrderController extends BaseController {
         return await this.orderService.list(req.query);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/user/order')
     async userOrderlist(@Request() req: DashRequest) {
-        if (!req.query.userId) {
-            throw new UnauthorizedException();
-        }
+        // req.query.userId = req.user.id;
         return await this.orderService.list(req.query);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/user/summary/:userId')
     async userOrderSummary(@Request() req: DashRequest) {
         return await this.orderService.orderSummary(req.params.userId);
     }
 
-    @Roles(ADMIN)
+    @Roles(ADMIN, CUSTOMER)
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
         return await this.orderService.getById(req.params.id);

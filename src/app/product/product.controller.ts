@@ -2,7 +2,7 @@ import { Controller, Get, Post, Request } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
-import { ADMIN } from 'src/base/constants';
+import { ADMIN, CUSTOMER } from 'src/base/constants';
 import { ProductService } from './product.service';
 import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 import { ProductImageService } from './product.image.service';
@@ -19,7 +19,7 @@ export class ProductController extends BaseController {
     @Roles(ADMIN)
     @Post('/add')
     async add(@Request() req: DashRequest) {
-        await this.productService.add(req.body);
+        return await this.productService.add(req.body);
     }
 
     @Roles(ADMIN)
@@ -45,19 +45,19 @@ export class ProductController extends BaseController {
     async lists(@Request() req: DashRequest) {
         return await this.productService.lists(req.query);
     }
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/list')
     async list(@Request() req: DashRequest) {
         return await this.productService.list(req.query);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/order-dates/:productId')
     async getCarOrderDates(@Request() req: DashRequest) {
         return await this.productService.getCarOrderDates(req.params.productId);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
         return await this.productService.getById(req.params.id);

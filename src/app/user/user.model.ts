@@ -2,6 +2,7 @@ export class User {
     id: string;
     name: string;
     status: number;
+    role: number;
     mobile: string;
     email: string;
     username: string;
@@ -12,6 +13,7 @@ export class User {
         id: string,
         name: string,
         status: number,
+        role: number,
         mobile: string,
         email: string,
         username: string,
@@ -21,6 +23,7 @@ export class User {
         this.id = id;
         this.name = name;
         this.status = status;
+        this.role = role;
         this.mobile = mobile;
         this.email = email;
         this.username = username;

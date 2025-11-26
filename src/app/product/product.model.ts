@@ -12,9 +12,6 @@ export class Product {
     brandId: string;
     engineId: string;
     description: string;
-    bluetooth: boolean;
-    aux: boolean;
-    gps: boolean;
     price: number;
     createdAt: Date;
 
@@ -32,10 +29,7 @@ export class Product {
         doors: number,
         luggage_capacity: string,
         description: string,
-        bluetooth: boolean,
-        aux: boolean,
         img: string,
-        gps: boolean,
         createdAt: Date,
     ) {
         this.id = id;
@@ -51,9 +45,6 @@ export class Product {
         this.seats = seats;
         this.doors = doors;
         this.luggage_capacity = luggage_capacity;
-        this.bluetooth = bluetooth;
-        this.aux = aux;
-        this.gps = gps;
         this.img = img;
         this.createdAt = createdAt;
     }

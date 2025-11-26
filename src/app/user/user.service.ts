@@ -4,7 +4,7 @@ import { AppUtils } from 'src/utils/utils';
 import { UserDao } from './user.dao';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.model';
-import { UserStatus } from 'src/base/constants';
+import { CUSTOMER, UserStatus } from 'src/base/constants';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -17,6 +17,7 @@ export class UserService extends BaseService {
             id: AppUtils.uuid4(),
             name: payload.name,
             status: UserStatus.Active,
+            role: CUSTOMER,
             mobile: payload.mobile,
             email: payload.email,
             username: payload.username,
@@ -37,7 +38,11 @@ export class UserService extends BaseService {
     }
 
     public async getById(id: any) {
-        return this.userDao.getById(id);
+        try {
+            return this.userDao.getById(id);
+        } catch (error) {
+            return null;
+        }
     }
 
     public async getUser(username: string) {
@@ -45,7 +50,7 @@ export class UserService extends BaseService {
     }
 
     public async countUsername(username: string) {
-        return this.userDao.countUsername(username)
+        return this.userDao.countUsername(username);
     }
 
     public async changeMyPassword(req: any): Promise<void> {

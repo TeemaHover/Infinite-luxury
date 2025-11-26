@@ -4,10 +4,15 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { jwtConstants } from 'src/auth/constants';
 import { AdminUserService } from 'src/app/admin.user/admin.user.service';
 import { DashRequest, DashUser } from 'src/auth/extentions';
+import { ADMIN } from 'src/base/constants';
+import { UserService } from 'src/app/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(private adminUsersService: AdminUserService) {
+    constructor(
+        private adminUsersService: AdminUserService,
+        private userService: UserService,
+    ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
@@ -17,7 +22,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(req: DashRequest, payload: any) {
-        const user = await this.adminUsersService.getAdminUserById(payload);
+        const user =
+            payload.role === ADMIN
+                ? await this.adminUsersService.getAdminUserById(payload)
+                : await this.userService.getById(payload.id);
+
         if (!user) {
             throw new UnauthorizedException();
         }
@@ -26,6 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const { password, ...result } = user;
         return <DashUser>{
             employee: result,
+            customer: result,
         };
     }
 }

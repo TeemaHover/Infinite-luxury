@@ -19,6 +19,7 @@ export class UserDao extends BaseDao {
             'id',
             'name',
             'password',
+            'role',
             'status',
             'mobile',
             'email',
@@ -41,7 +42,7 @@ export class UserDao extends BaseDao {
             `SELECT * FROM "${tableName}" WHERE "id"=$1`,
             [id],
         );
-        return res
+        return res;
     };
 
     list = async (query) => {

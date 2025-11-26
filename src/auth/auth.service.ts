@@ -62,6 +62,7 @@ export class AuthService {
             }),
             id: result.id,
             name: result.name,
+            role: result.role,
             username: result.username,
         };
     }

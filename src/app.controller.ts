@@ -74,14 +74,6 @@ export class AppController {
         return { files: urls };
     }
 
-    @Roles(ADMIN)
-    @Get('/dash/admin/me')
-    async uploadFile(@Request() req) {
-        const user = req.user;
-        // console.log(JSON.stringify(user, null, 2));
-        return user;
-    }
-
     @Get('/health')
     @Public()
     async healchCheck() {

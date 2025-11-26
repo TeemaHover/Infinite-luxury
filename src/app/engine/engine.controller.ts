@@ -2,7 +2,7 @@ import { Controller, Get, Post, Request } from '@nestjs/common';
 import { BaseController } from '../../base/base.controller';
 import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
-import { ADMIN } from 'src/base/constants';
+import { ADMIN, CUSTOMER } from 'src/base/constants';
 import { EngineService } from './engine.service';
 import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 
@@ -24,13 +24,13 @@ export class EngineController extends BaseController {
         await this.engineService.update(req.body);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/list')
     async list(@Request() req: DashRequest) {
         return await this.engineService.list(req.query);
     }
 
-    @Public()
+    @Roles(ADMIN, CUSTOMER)
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
         return await this.engineService.getById(req.params.id);
