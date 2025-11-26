@@ -4,7 +4,6 @@ import { DashRequest } from 'src/auth/extentions';
 import { Roles } from 'src/auth/guards/role/role.decorator';
 import { ADMIN, CUSTOMER } from 'src/base/constants';
 import { BrandService } from './brand.service';
-import { Public } from 'src/auth/guards/jwt/jwt-auth-guard';
 
 @Controller('brand')
 export class BrandController extends BaseController {

@@ -35,6 +35,8 @@ export class UserController extends BaseController {
     async getAdminUser(@Request() req) {
         return await this.userService.getById(req.params.id);
     }
+
+    @Roles(CUSTOMER)
     @Get('/me')
     async me(@Req() { user }) {
         return user;
