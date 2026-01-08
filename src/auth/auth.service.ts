@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    HttpException,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AdminUserService } from 'src/app/admin.user/admin.user.service';
@@ -14,25 +18,30 @@ export class AuthService {
 
     async validateAdminUser(username: string, pass: string): Promise<any> {
         const user = await this.adminUsersService.getAdminUser(username);
+        if (!user) throw new HttpException('Бүртгэлгүй хэрэглэгч байна.', 401);
         const isMatch = await bcrypt.compare(pass, user.password);
+
         if (user && isMatch == true) {
             const { password, ...result } = user;
             return result;
         }
+        if (!user) throw new HttpException('Нууц үг таарахгүй байна.', 401);
         return false;
     }
 
     async validateUser(username: string, pass: string): Promise<any> {
         const user = await this.userService.getUser(username);
-        const isMatch = await bcrypt.compare(pass, user.password);
+        if (!user) throw new HttpException('Бүртгэлгүй хэрэглэгч байна.', 401);
+        const isMatch = await bcrypt.compare(pass, user?.password ?? '');
         if (user && isMatch == true) {
             const { password, ...result } = user;
             return result;
         }
-        return false;
+        throw new HttpException('Нууц үг таарахгүй байна.', 401);
     }
 
     async adminLogin(user: any) {
+        console.log(user)
         const result = await this.validateAdminUser(
             user.username,
             user.password,

@@ -39,6 +39,8 @@ export class UserController extends BaseController {
     @Roles(CUSTOMER)
     @Get('/me')
     async me(@Req() { user }) {
-        return user;
+        console.log(user)
+        if(user.employee) return user.employee
+        return user.customer;
     }
 }

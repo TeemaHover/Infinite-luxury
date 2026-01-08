@@ -5,12 +5,14 @@ import { AppUtils } from 'src/utils/utils';
 import { ProductDao } from './product.dao';
 import { Product } from './product.model';
 import { ProductImageDao } from './product.image.dao';
+import { FeatureService } from '../feature/feature.service';
 
 @Injectable()
 export class ProductService extends BaseService {
     constructor(
         private productDao: ProductDao,
         private productImageDao: ProductImageDao,
+        private feature: FeatureService,
     ) {
         super();
     }
@@ -23,6 +25,7 @@ export class ProductService extends BaseService {
             status: AdminUserStatus.Active,
             price: payload.price,
             engineId: payload.engineId,
+            features: payload.features,
             transmission: payload.transmission,
             drive_type: payload.drive_type,
             driver_min_age: payload.driver_min_age,
@@ -35,7 +38,6 @@ export class ProductService extends BaseService {
             createdAt: new Date(),
         };
         const res = await this.productDao.add(product);
-        console.log('res:', res);
         if (images) {
             await Promise.all(
                 images.map((image) => {
@@ -53,6 +55,18 @@ export class ProductService extends BaseService {
     }
 
     public async update(payload: any): Promise<void> {
+        const images = payload.images;
+        if (images) {
+            await this.productImageDao.deleteByProductId(payload.id);
+            images.map((image) => {
+                this.productImageDao.add({
+                    id: AppUtils.uuid4(),
+                    productId: payload.id,
+                    url: image,
+                    createdAt: new Date(),
+                });
+            });
+        }
         await this.productDao.update(payload);
     }
 
@@ -123,6 +137,13 @@ export class ProductService extends BaseService {
         const product = await this.productDao.getById(id);
         const images = await this.productImageDao.list({ productId: id });
         product.images = images?.items ?? [];
+        if (product.features) {
+            product.features = await Promise.all(
+                product.features?.map(async (feature) => {
+                    return await this.feature.getById(feature);
+                }),
+            );
+        }
         return product;
     }
 

@@ -10,6 +10,7 @@ export class Product {
     img: string;
     luggage_capacity: string;
     brandId: string;
+    features: string[];
     engineId: string;
     description: string;
     price: number;
@@ -22,6 +23,7 @@ export class Product {
         price: number,
         engineId: string,
         brandId: string,
+        features: string[],
         transmission: number,
         drive_type: number,
         driver_min_age: number,
@@ -39,6 +41,7 @@ export class Product {
         this.brandId = brandId;
         this.engineId = engineId;
         this.description = description;
+        this.features = features;
         this.transmission = transmission;
         this.drive_type = drive_type;
         this.driver_min_age = driver_min_age;

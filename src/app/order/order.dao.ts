@@ -21,7 +21,7 @@ export class OrderDao extends BaseDao {
             'email',
             'startDate',
             'endDate',
-            'desctiption',
+            'description',
             'meta',
             'createdAt',
         ]);
@@ -66,7 +66,6 @@ export class OrderDao extends BaseDao {
         const sql = `SELECT * FROM "${tableName}" ${criteria}
             ${orderBy} ${extra}`;
         const result = await this._db.select(sql, builder.values);
-        console.log(result);
         return { count: countResult.count, items: result };
     };
 

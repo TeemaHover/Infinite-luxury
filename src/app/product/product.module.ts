@@ -6,10 +6,16 @@ import { ProductService } from './product.service';
 import { ProductDao } from './product.dao';
 import { ProductImageDao } from './product.image.dao';
 import { ProductImageService } from './product.image.service';
+import { FeatureModule } from '../feature/feature.module';
 @Module({
-    imports: [AppDbModule, BaseModule],
+    imports: [AppDbModule, BaseModule, FeatureModule],
     controllers: [ProductController],
-    providers: [ProductService, ProductDao,ProductImageDao,ProductImageService],
+    providers: [
+        ProductService,
+        ProductDao,
+        ProductImageDao,
+        ProductImageService,
+    ],
     exports: [ProductService],
 })
 export class ProductModule {}

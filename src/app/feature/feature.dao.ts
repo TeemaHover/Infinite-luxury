@@ -2,47 +2,39 @@ import { Injectable } from '@nestjs/common';
 import { BaseDao } from 'src/base/base.dao';
 import { AppDB } from 'src/db/pg/app.db';
 import { SqlBuilder, SqlCondition } from 'src/db/pg/sql.builder';
-import * as bcrypt from 'bcrypt';
 
-const tableName = 'USERS';
+const tableName = 'FEATURES';
 
 @Injectable()
-export class UserDao extends BaseDao {
+export class FeatureDao extends BaseDao {
     constructor(private readonly _db: AppDB) {
         super();
     }
 
-    add = async (user: any) => {
-        const saltOrRounds = 1;
-        user.password = await bcrypt.hash(user.password, saltOrRounds);
-        await this._db.insert(tableName, user, [
+    add = async (feature: any) => {
+        await this._db.insert(tableName, feature, [
             'id',
             'name',
-            'password',
-            'role',
-            'status',
-            'mobile',
-            'email',
-            'username',
+            'description',
+            'images',
             'createdAt',
         ]);
     };
 
-    update = async (user: any) => {
+    update = async (feature: any) => {
         await this._db.update(
             tableName,
-            user,
-            ['name', 'email', 'mobile', 'username'],
-            [new SqlCondition('id', '=', user.id)],
+            feature,
+            ['name', 'description', 'images'],
+            [new SqlCondition('id', '=', feature.id)],
         );
     };
 
     getById = async (id: any) => {
-        const res = await this._db.selectOne(
+        return await this._db.selectOne(
             `SELECT * FROM "${tableName}" WHERE "id"=$1`,
             [id],
         );
-        return res;
     };
 
     list = async (query) => {
@@ -56,39 +48,11 @@ export class UserDao extends BaseDao {
 
         const countSql = `SELECT COUNT(*) as count FROM "${tableName}" ${criteria}`;
         const countResult = await this._db.selectOne(countSql, builder.values);
-        const sql = `SELECT * FROM "${tableName}" ${criteria}
+        const sql = `SELECT "id", "name" FROM "${tableName}" ${criteria}
             ${orderBy} limit ${query.limit} offset ${query.skip}`;
         const result = await this._db.select(sql, builder.values);
 
         return { count: countResult.count, items: result };
-    };
-
-    changePassword = async (id: string, password: string) => {
-        const saltOrRounds = 1;
-        password = await bcrypt.hash(password, saltOrRounds);
-
-        const builder = new SqlBuilder({ password }, ['password']);
-
-        const { cols, indexes } = builder.create();
-        const criteria = builder.condition('id', '=', id).criteria();
-        await this._db._update(
-            `UPDATE "${tableName}" SET (${cols}) = ROW(${indexes}) ${criteria}`,
-            builder.values,
-        );
-    };
-
-    get = async (username: any) => {
-        return await this._db.selectOne(
-            `SELECT * FROM "${tableName}" WHERE lower("email")= lower($1) or lower("mobile") = $2`,
-            [username, username],
-        );
-    };
-
-    countUsername = async (username: any) => {
-        return await this._db.count(
-            `SELECT COUNT(*) FROM "${tableName}" WHERE "username" = $1`,
-            [username],
-        );
     };
 
     buildCriteria(filter: any) {
@@ -104,7 +68,6 @@ export class UserDao extends BaseDao {
 
         const criteria = builder
             .conditionIfNotEmpty('name', 'ILIKE', filter.name)
-            .conditionIfNotEmpty('status', '=', filter.status)
             .criteria();
         return { builder, criteria };
     }

@@ -33,6 +33,12 @@ export class ProductImageDao extends BaseDao {
             [id],
         );
     };
+    deleteByProductId = async (id: string) => {
+        return await this._db.select(
+            `DELETE FROM "${tableName}" WHERE "productId"=$1`,
+            [id],
+        );
+    };
 
     list = async (query) => {
         const { builder, criteria } = this.buildCriteria(query);

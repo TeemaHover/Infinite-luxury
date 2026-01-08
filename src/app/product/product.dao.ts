@@ -19,6 +19,7 @@ export class ProductDao extends BaseDao {
             'price',
             'engineId',
             'brandId',
+            'features',
             'transmission',
             'drive_type',
             'driver_min_age',
@@ -47,10 +48,10 @@ export class ProductDao extends BaseDao {
                 'driver_min_age',
                 'seats',
                 'doors',
+                'features',
+                'img',
+                'description',
                 'luggage_capacity',
-                'bluetooth',
-                'aux',
-                'gps',
             ],
             [new SqlCondition('id', '=', product.id)],
         );
@@ -119,8 +120,6 @@ export class ProductDao extends BaseDao {
         if (filter.name) {
             filter.name = `%${filter.name}%`;
         }
-
-        console.log('filter:', filter);
 
         const builder = new SqlBuilder(filter);
 

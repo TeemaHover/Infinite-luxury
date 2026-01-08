@@ -21,8 +21,10 @@ export class OrderController extends BaseController {
     @Roles(ADMIN, CUSTOMER)
     @Post('/add')
     async add(@Request() req: DashRequest) {
-        console.log('req:', req.user);
-        await this.orderService.add(req.body);
+        await this.orderService.add({
+            userId: req.body.userId ?? req.user.customer.id,
+            ...req.body,
+        });
     }
 
     @Roles(ADMIN)

@@ -23,12 +23,13 @@ export class OrderService extends BaseService {
     public async add(payload: any): Promise<void> {
         const user = await this.userService.getById(payload.userId);
         const product = await this.productService.getById(payload.productId);
+        console.log(payload);
         const order: Order = {
             id: AppUtils.uuid4(),
             status: OrderStatus.Pending,
             productId: payload.productId,
             userId: payload.userId,
-            mobile: user.mobile,
+            mobile: payload.mobile ?? user.mobile,
             email: user.email,
             startDate: payload.startDate,
             endDate: payload.endDate,
@@ -114,7 +115,9 @@ export class OrderService extends BaseService {
     }
 
     async getById(id: any) {
-        return this.orderDao.getById(id);
+        const order = await this.orderDao.getById(id);
+        const product = await this.productService.getById(order.productId);
+        return { ...order, product };
     }
 
     async search(query) {

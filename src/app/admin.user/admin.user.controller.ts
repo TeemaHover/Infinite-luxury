@@ -14,7 +14,8 @@ export class AdminUserController extends BaseController {
     @Roles(ADMIN)
     @Get('me')
     async me(@Req() { user }) {
-        return user;
+        console.log(user)
+        return user.employee;
     }
 
     @Roles(ADMIN)

@@ -15,6 +15,7 @@ import { BrandModule } from './app/brand/brand.module';
 import { EngineModule } from './app/engine/engine.module';
 import { UserModule } from './app/user/user.module';
 import { FileService } from './file.service';
+import { FeatureModule } from './app/feature/feature.module';
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { FileService } from './file.service';
         BrandModule,
         EngineModule,
         UserModule,
+        FeatureModule,
     ],
     controllers: [AppController],
     providers: [

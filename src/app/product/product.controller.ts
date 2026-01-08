@@ -43,12 +43,12 @@ export class ProductController extends BaseController {
     @Public()
     @Get('/public/list')
     async lists(@Request() req: DashRequest) {
-        return await this.productService.lists(req.query);
+        return await this.productService.list(req.query);
     }
     @Roles(ADMIN, CUSTOMER)
     @Get('/list')
     async list(@Request() req: DashRequest) {
-        return await this.productService.list(req.query);
+        return await this.productService.lists(req.query);
     }
 
     @Roles(ADMIN, CUSTOMER)
@@ -57,7 +57,8 @@ export class ProductController extends BaseController {
         return await this.productService.getCarOrderDates(req.params.productId);
     }
 
-    @Roles(ADMIN, CUSTOMER)
+    // @Roles(ADMIN, CUSTOMER)
+    @Public()
     @Get('/detail/:id')
     async getAdminUser(@Request() req) {
         return await this.productService.getById(req.params.id);
